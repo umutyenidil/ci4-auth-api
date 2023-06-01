@@ -31,6 +31,18 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+
+$routes->group('auth', static function ($routes) {
+    $routes->post('sign-up', 'AuthController::signUp');
+    $routes->post('sign-in', 'AuthController::signIn');
+});
+
+$routes->group('dashboard', ['filter' => 'auth'], static function ($routes) {
+    $routes->get('user-list', 'UserController::readUserList');
+    $routes->get('user', 'UserController::readUserByUuid');
+});
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
